@@ -1,6 +1,7 @@
 <html>
 <style>
 
+
 .navBar{margin-left:25%;}
 .button1{font-size:25px; cursor: pointer; border:none; background-color:red; text-align:center;}
 
@@ -69,18 +70,103 @@ body{background-color:grey; border-radius 5px;}
 
 <div class = "CenterAllfields">
 
-<h2>Covid-19 Results</h2>
 
-<h3> You're results will be available soon,  please stay safe and follow covid-19 guidelines. </h3>
-
-<br> <br>
-
-<input type="submit" value="Delete your account + results" id ="submit" name = "submit">
 
 <?php
 
+session_start();
+
+include "db.inc.php";
+
+echo "<h2>Covid-19 Results</h2>";
+echo " <h3> Hi ".$_SESSION["Email"].', </h3>'; 
+echo "";
+echo "You're  covid-19 results will be available soon,  please stay safe and follow covid-19 guidelines. </h3>";
+
+$cipher = 'AES-128-CBC';
+$key = 'thebestsecretkey';
+
+// Create database
+$sql = "CREATE DATABASE IF NOT EXISTS CovidDB";
+if ($conn->query($sql) === TRUE) 
+{
+  echo "";
+}
+else 
+{
+  echo "Error creating database: " . $conn->error;
+}
+
+$sql = 'USE CovidDB;';
+
+if (!$conn->query($sql) === TRUE) 
+{
+  die('Error using database: ' . $conn->error);
+}
+
+
+	$sql = "SELECT * FROM registeredaccounts";
+	$result = $conn->query($sql);
+	
+
+
+	if ($result->num_rows > 0) 
+	{
+		
+		while($row = mysqli_fetch_array($result))
+		{
+			$iv = hex2bin($row['iv']);
+		
+			
+			//Verifiying that the email is in the array produced from the database rows of email field
+			$Email = hex2bin($row['Email']);
+			$unencrypted_Email = openssl_decrypt($Email, $cipher, $key, OPENSSL_RAW_DATA, $iv);
+			
+
+			$userID =($row['userID']);
+			$unencrypted_userID = openssl_decrypt($userID, $cipher, $key, OPENSSL_RAW_DATA, $iv);
+					
+
+		}
+
+			
+			if (isset($_POST['submit']))
+			{
+				$sql = "DELETE Email FROM registeredaccounts WHERE Email = '$unencrypted_Email'";
+						
+				if($conn->query($sql) === TRUE) 
+				{
+
+				echo ('You have successfuly deleted your account, stay safe and follow HSE Covid guidelines ');
+				echo "";
+				echo ('Thankyou!');
+				
+				} 
+
+				else
+				{
+				 die('Error Deleting account ' . $conn->error);
+				}
+			
+			}
+	
+	
+	}
+
+
+
+			
+
+
 
 ?>
+
+
+
+<br> <br> 
+<br> <br>
+
+<input type="submit" value="Delete your account + results" id ="submit" name = "submit">
 
 
 </div>

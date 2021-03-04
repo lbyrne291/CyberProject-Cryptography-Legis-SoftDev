@@ -3,6 +3,8 @@
 
 <?php
 
+session_start();
+
 include "db.inc.php";
 
 $cipher = 'AES-128-CBC';
@@ -151,6 +153,8 @@ if (isset($_POST['submit']))
 	 
 	 $sql = "INSERT INTO TestBookings(iv,DateAndTime)
 	 VALUES ('$iv_hex','$TestDateTime_hex')";
+
+
 	 
 if ($conn->query($sql) === TRUE) 
 {

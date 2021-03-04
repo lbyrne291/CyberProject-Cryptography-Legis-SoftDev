@@ -75,5 +75,30 @@ h1{text-align:center;}
 <div class = para>
 <p>We are all in this together!</p>
 </div>
+
+<?php
+
+include "db.inc.php";
+
+session_start();
+
+
+?>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

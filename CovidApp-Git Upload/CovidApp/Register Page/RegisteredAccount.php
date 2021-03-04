@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 include "db.inc.php";
 
@@ -34,6 +35,7 @@ if (!$conn->query($sql) === TRUE)
 {
   die('Error creating table: ' . $conn->error);
 }
+
 
 
 

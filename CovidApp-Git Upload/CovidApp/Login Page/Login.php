@@ -94,6 +94,9 @@ Password:<br>
 <div class ="Logging">
 <?php
 
+
+
+
 if (isset($_POST['login']))
 {
 
@@ -122,15 +125,15 @@ if (isset($_POST['login']))
 			$unencrypted_Email = openssl_decrypt($Email, $cipher, $key, OPENSSL_RAW_DATA, $iv);
 		
 			//Verifiying that the password is in the array produced from the database rows of password field
-			$PasswordsFromDB = ($row['Password']);		
-		
-		}
-			
+			$PasswordsFromDB = ($row['Password']);	
+
+				
 		//determining if the email is in the database
 		if($escaped_Email === $unencrypted_Email)
 		{
 			$_SESSION['Email'] = $unencrypted_Email;
 			echo ""; 
+
 		}
 		else
 		{
@@ -147,6 +150,9 @@ if (isset($_POST['login']))
 		{
 			echo "Error logging in, Please try again.";
 		}
+		
+		}
+		
 		
 	}
 	 
